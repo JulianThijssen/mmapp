@@ -71,14 +71,7 @@ public class CanvasView extends View {
 		text.setColor(Color.WHITE);
 		text.setShadowLayer(3.0F,3.0F,3.0F,Color.rgb(0x20,0x20,0x20));
 		text.setTextSize(getHeight() * 0.1F);
-		
-		if(MyButton.button){
-			mode = PICTURE_MODE;
-			picture = argb.clone();
-			picture_width = width;
-			picture_height = height;
-			MyButton.button = false;
-		}
+
 		if(mode == CAMERA_MODE) {
 			if(argb != null) {
 				canvas.drawBitmap(argb, 0, width, 0f, 0f, width, height, false, null);
@@ -94,6 +87,15 @@ public class CanvasView extends View {
 		this.width = width;
 		this.height = height;
 		this.argb = argb;
+	}
+	
+	public void setMode(int mode) {
+		if(mode == PICTURE_MODE) {
+			picture = argb.clone();
+			picture_width = width;
+			picture_height = height;
+		}
+		this.mode = mode;
 	}
 
 	public static void saveImage(int[] argb) {
