@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+	<item android:id="@+id/camera_switch" android:title="Switch Camera" android:showAsAction="ifRoom"/>
+	<item android:id="@+id/select_image" android:title="Select Image" android:showAsAction="ifRoom"/>
+</menu>
+
