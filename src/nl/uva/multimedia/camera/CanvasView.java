@@ -73,15 +73,16 @@ public class CanvasView extends View {
 	
 		/* Save state */
 		canvas.save();
-		//canvas.translate(getWidth() * 0.1F, getHeight() * 0.1F);
-		canvas.drawText("HEE", 0, 0, text);
+		canvas.translate(getWidth() * 0.1F, getHeight() * 0.1F);
+		//canvas.drawText("HEE", 0, 0, text);
 		//argb_capture = argb;
 		if(MyButton.button){
 			argb_capture = argb;
 			Log.e("AAP", Arrays.toString(argb_capture));
 			MyButton.button = false;
+			canvas.drawBitmap(argb_capture, 0, width, 0f, 0f, width, height, false, null);
+
 		}
-		canvas.drawBitmap(argb_capture, 0, width, 0f, 0f, width, height, false, null);
 		canvas.restore();
 		
 		/* Paint a image if we have it, just a demo, clean this up so it works
