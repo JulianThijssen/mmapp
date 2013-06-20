@@ -68,7 +68,7 @@ public class Application extends Activity {
 		/* Grab the views and widgets from the lay-out. */
 		m_camera_view      = (CameraView)findViewById(R.id.cameraView);
 		m_canvas_view      = (CanvasView)findViewById(R.id.canvasView);
-		m_slider           = (MySlider)findViewById(R.id.slider);
+		//m_slider           = (MySlider)findViewById(R.id.slider);
 		m_button           = (MyButton)findViewById(R.id.button);
 		
 		/* Do some basic plumbing */

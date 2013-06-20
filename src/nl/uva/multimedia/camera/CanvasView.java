@@ -21,17 +21,24 @@ import android.graphics.Matrix;
 import android.graphics.Bitmap;
 import android.view.View;
 import android.util.AttributeSet;
+import android.util.Log;
 
 import java.lang.Math;
 import java.lang.String;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class CanvasView extends View {
-	public int[] argb;
+	
 	public int image_width;
 	public int image_height;
+	private int[] argb;
 	
 	Bitmap m_image = null;
+	private int width;
+	private int height;
+	private int[] argb_capture = new int[width*height];
+
 
 	public CanvasView(Context context) {
 		super(context);
@@ -52,9 +59,7 @@ public class CanvasView extends View {
 	/* Called whenever the canvas is dirty and needs redrawing */
 	@Override protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
-
-		canvas.drawColor(Color.BLACK);
-	
+		
 		/* Define the basic paint */
 		Paint paint = new Paint();
 		paint.setColor(Color.rgb(0xa0,0xa0,0xb0));
@@ -68,12 +73,17 @@ public class CanvasView extends View {
 	
 		/* Save state */
 		canvas.save();
-		canvas.translate(getWidth() * 0.1F, getHeight() * 0.1F);
-
-		canvas.drawText("Hello world! ", 0.0F, 0.0F, text);
-
+		//canvas.translate(getWidth() * 0.1F, getHeight() * 0.1F);
+		canvas.drawText("HEE", 0, 0, text);
+		//argb_capture = argb;
+		if(MyButton.button){
+			argb_capture = argb;
+			Log.e("AAP", Arrays.toString(argb_capture));
+			MyButton.button = false;
+		}
+		canvas.drawBitmap(argb_capture, 0, width, 0f, 0f, width, height, false, null);
 		canvas.restore();
-
+		
 		/* Paint a image if we have it, just a demo, clean this up so it works
 		 * your way, or remove it if you don't need it
 		 */
@@ -99,5 +109,22 @@ public class CanvasView extends View {
 	public Bitmap getSelectedImage() {
 		return m_image;
 	}
+
+	/* set the argb value */
+	public void setArgb(int[] argb, int width, int height) {
+		this.width = width;
+		this. height = height;
+		this.argb = argb;
+	}
+
+	public static void saveImage(int[] argb) {
+		//int[] img = new int[240*320];
+		//Bitmap bitmap = Bitmap.createBitmap(100, 100, Bitmap.Config.RGB_565);
+        //bitmap.copyPixelsFromBuffer(makeBuffer(vector, vector.length));
+        //bitmap.setPixels(argb, 0, 240, 0, 0, 240, 320);
+		//img[5] = this.argb[5];
+	}
+	
+	
 }
 

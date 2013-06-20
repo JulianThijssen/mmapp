@@ -15,9 +15,10 @@ import android.view.View;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
-
 public class MyButton extends Button implements View.OnClickListener {
 	/* Necessary constructors */
+	public static boolean button = false;
+
 	public MyButton (Context context) {
 		super(context);
 		setup();
@@ -40,5 +41,6 @@ public class MyButton extends Button implements View.OnClickListener {
 	public void onClick(View view) {
 		/* Do something on click here */
 		Log.e("MyButton", "Yes the button works");
+		button ^= true;
 	}
 }

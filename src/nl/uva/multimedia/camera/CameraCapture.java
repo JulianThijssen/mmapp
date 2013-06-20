@@ -57,6 +57,8 @@ class CameraCapture implements CameraView.PreviewCallback {
 		/* Invalidate the canvas, forcing it to be redrawn with the new data.
 		 * You can do this in other places, evaluate what makes sense to you.
 		 */
+		m_canvas_view.setArgb(argb, size.width, size.height);
+
 		m_canvas_view.invalidate();
 	}
 	
