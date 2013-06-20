@@ -53,7 +53,6 @@ public class CameraView extends ViewGroup implements SurfaceHolder.Callback, Sen
 	protected Sensor                     m_accelerometer    = null; 
 	protected int                        m_frame_count      = 1;
 	protected byte[]                     m_output           = new byte[1];
-	protected boolean					 m_enabled  		= true;
 
 	public CameraView(Context context) {
 		super(context);
@@ -399,11 +398,6 @@ public class CameraView extends ViewGroup implements SurfaceHolder.Callback, Sen
 		 */
 		if (m_real_rotation == 0) {
 			m_preview_callback.onPreviewFrame(data, camera, false);
-			return;
-		}
-		
-		/* Check if the camera view is enabled */
-		if(!m_enabled) {
 			return;
 		}
 
