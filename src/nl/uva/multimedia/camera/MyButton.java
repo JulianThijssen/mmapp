@@ -43,6 +43,8 @@ public class MyButton extends Button implements View.OnClickListener {
 		Log.e("MyButton", "Yes the button works");
 		button = true;
 		CameraView cameraView = (CameraView)(findViewById(R.id.cameraView));
-		cameraView.m_enabled = false;
+		if(cameraView != null) {
+			cameraView.m_enabled = false;
+		}
 	}
 }
