@@ -72,10 +72,12 @@ public class CanvasView extends View {
 		text.setShadowLayer(3.0F,3.0F,3.0F,Color.rgb(0x20,0x20,0x20));
 		text.setTextSize(getHeight() * 0.1F);
 		
-		canvas.drawBitmap(argb, 0, width, 0f, 0f, width, height, false, null);
 		if(MyButton.button){
 			MyButton.button = false;
 			mode = PICTURE_MODE;
+		}
+		if(argb != null) {
+			canvas.drawBitmap(argb, 0, width, 0f, 0f, width, height, false, null);
 		}
 	}
 
