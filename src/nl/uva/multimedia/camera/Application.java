@@ -16,7 +16,6 @@ package nl.uva.multimedia.camera;
  */
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent; 
 import android.content.res.Configuration;
 import android.database.Cursor;
@@ -25,13 +24,10 @@ import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
-import android.view.Display;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.ViewConfiguration;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 
