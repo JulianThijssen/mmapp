@@ -85,7 +85,7 @@ public class CanvasView extends View {
 			}
 		}
 		if(mode == PICTURE_MODE) {
-			canvas.drawBitmap(picture, 0, width, 0f, 0f, width, height, false, null);
+			canvas.drawBitmap(picture, 0, picture_width, 0f, 0f, picture_width, picture_height, false, null);
 		}
 	}
 
