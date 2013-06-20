@@ -17,7 +17,13 @@
         android:layout_marginRight="40dp"
         android:layout_marginTop="42dp"
         android:text="MyButton" />
-    
-    
+
+    <nl.uva.multimedia.camera.CameraView
+        android:id="@+id/cameraView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true" >
+    </nl.uva.multimedia.camera.CameraView>
 
 </RelativeLayout>

@@ -32,6 +32,7 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import nl.uva.multimedia.camera.CameraCapture;
+import nl.uva.multimedia.camera.CameraView;
 import nl.uva.multimedia.camera.CanvasView;
 import nl.uva.multimedia.camera.MySlider;
 import nl.uva.multimedia.camera.MyButton;
@@ -41,6 +42,7 @@ public class Application extends Activity {
 	CameraCapture   m_camera_capture   = new CameraCapture();
 	CanvasView      m_canvas_view      = null;
 	MySlider        m_slider           = null;
+	CameraView      m_camera_view      = null;
 	MyButton        m_button           = null;
 
 	/* Change this to enable the image chooser */
@@ -60,7 +62,7 @@ public class Application extends Activity {
 		setContentView(R.layout.main);
 		
 		/* Grab the views and widgets from the lay-out. */
-		//m_camera_view      = (CameraView)findViewById(R.id.cameraView);
+		m_camera_view      = (CameraView)findViewById(R.id.cameraView);
 		m_canvas_view      = (CanvasView)findViewById(R.id.canvasView);
 		//m_slider           = (MySlider)findViewById(R.id.slider);
 		m_button           = (MyButton)findViewById(R.id.button);
@@ -72,22 +74,30 @@ public class Application extends Activity {
 		 * with this. Even with LARGEST_FIT it can fallback on
 		 * BEST_FIT if no image is small enough.
 		 */
+		m_camera_view.setSizeType(CameraView.SizeType.LARGEST_FIT);
+		m_camera_view.setPreviewCallback(m_camera_capture);
 	}
 	
 	@Override protected void onResume() {
 		super.onResume();
 
 		Configuration config = getResources().getConfiguration();
+		
+		m_camera_view.acquireCamera();
 	}
 	
 	@Override protected void onPause() {
 		super.onPause();
+		
+		m_camera_view.releaseCamera();
 	}
 	
 	@Override public void onConfigurationChanged(Configuration config) {
 		super.onConfigurationChanged(config);
 	
 		/* Need to reacquire camera on these */
+		m_camera_view.releaseCamera();
+		m_camera_view.acquireCamera();
 	}
 
 	/* Menu options handling, you probably don't need to change this */
@@ -115,6 +125,9 @@ public class Application extends Activity {
         Intent intent;
 		switch (item.getItemId()) {
 			case R.id.camera_switch:
+				if (m_camera_view != null) {
+					m_camera_view.nextCamera();
+				}
 				return true;
 			case R.id.select_image:
 				intent = new Intent();
