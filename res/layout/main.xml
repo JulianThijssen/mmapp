@@ -5,8 +5,8 @@
 
     <nl.uva.multimedia.camera.CameraView
         android:id="@+id/cameraView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true" >
     </nl.uva.multimedia.camera.CameraView>
@@ -22,7 +22,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginLeft="54dp"
-        android:layout_toRightOf="@+id/cameraView"
         android:text="MyButton" />
 
 </RelativeLayout>

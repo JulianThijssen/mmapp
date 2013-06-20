@@ -73,11 +73,11 @@ public class CanvasView extends View {
 		text.setTextSize(getHeight() * 0.1F);
 		
 		if(MyButton.button){
-			MyButton.button = false;
 			mode = PICTURE_MODE;
 			picture = argb.clone();
 			picture_width = width;
 			picture_height = height;
+			MyButton.button = false;
 		}
 		if(mode == CAMERA_MODE) {
 			if(argb != null) {
