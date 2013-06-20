@@ -3,13 +3,6 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
 
-    <nl.uva.multimedia.camera.CameraView
-        android:id="@+id/cameraView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" >
-
-    </nl.uva.multimedia.camera.CameraView>
-
     <nl.uva.multimedia.camera.CanvasView
         android:id="@+id/canvasView"
         android:layout_width="match_parent"
