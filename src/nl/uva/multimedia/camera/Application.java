@@ -156,8 +156,6 @@ public class Application extends Activity {
 
             path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
 			cursor.close();
-
-			m_canvas_view.setSelectedImage(BitmapFactory.decodeFile(path));
 		}
 	}
 }

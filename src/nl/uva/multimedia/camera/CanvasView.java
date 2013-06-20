@@ -34,11 +34,11 @@ public class CanvasView extends View {
 	private int[] argb;
 	private int width;
 	private int height;
-	private int mode = CAMERA_MODE;
 	
-	Bitmap m_image = null;
-	public int image_width;
-	public int image_height;
+	private int[] picture;
+	private int picture_width;
+	private int picture_height;
+	private int mode = CAMERA_MODE;
 
 
 	public CanvasView(Context context) {
@@ -75,28 +75,25 @@ public class CanvasView extends View {
 		if(MyButton.button){
 			MyButton.button = false;
 			mode = PICTURE_MODE;
+			picture = argb.clone();
+			picture_width = width;
+			picture_height = height;
 		}
-		if(argb != null) {
-			canvas.drawBitmap(argb, 0, width, 0f, 0f, width, height, false, null);
+		if(mode == CAMERA_MODE) {
+			if(argb != null) {
+				canvas.drawBitmap(argb, 0, width, 0f, 0f, width, height, false, null);
+			}
 		}
-	}
-
-	/* Accessors */
-	public void setSelectedImage(Bitmap image) {
-		m_image = image;
-	}
-
-	public Bitmap getSelectedImage() {
-		return m_image;
+		if(mode == PICTURE_MODE) {
+			canvas.drawBitmap(picture, 0, width, 0f, 0f, width, height, false, null);
+		}
 	}
 
 	/* set the argb value */
 	public void setArgb(int[] argb, int width, int height) {
-		if(mode == CAMERA_MODE) {
-			this.width = width;
-			this. height = height;
-			this.argb = argb;
-		}
+		this.width = width;
+		this.height = height;
+		this.argb = argb;
 	}
 
 	public static void saveImage(int[] argb) {
