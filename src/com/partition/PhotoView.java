@@ -39,21 +39,21 @@ public class PhotoView extends View {
 	}
 	
 	public int getPhotoCount() {
-		if(photos != null) {
-			return photos.length;
+		if(previewList != null) {
+			return previewList.size();
 		}
 		return 0;
 	}
 	
 	public void reloadPhotos() {	
-		if(path != null) {
+		if(path != null && getWidth() > 0) {
 			File dir = new File(path);
 			photos = dir.listFiles();
 			Log.i("Size", "Width: " + getWidth() + " Height: " + getHeight());
 			for(int i = 0; i < photos.length; i++) {
 				if(photos[i].length() > 10) {
 					Bitmap preview = BitmapFactory.decodeFile(photos[i].getAbsolutePath());
-					preview = ImageFilter.scale(preview, getWidth(), getHeight());
+					preview = ImageFilter.scale(preview, 400, 400);
 					previewList.add(preview);
 				}
 			}
@@ -87,7 +87,7 @@ public class PhotoView extends View {
 		paint.setTextSize(textSize);
 		
 		if(previewList.size() > 0) {
-			canvas.drawBitmap(previewList.get(photoIndex), 180, 0, paint);
+			canvas.drawBitmap(previewList.get(photoIndex), 280, 0, paint);
 		} else {
 			canvas.drawText(NO_IMAGES, (getWidth() - paint.getTextSize() * (CORRUPT_IMAGE.length() / 2f))/2, getHeight()/2, paint);
 		}
