@@ -12,6 +12,7 @@ import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.ContentBody;
 import org.apache.http.entity.mime.content.FileBody;
 import android.os.AsyncTask;
+import android.os.Environment;
 import android.util.Log;
 
 public class MidiClient {
@@ -50,8 +51,8 @@ class UploadPictureTask extends AsyncTask<File, Void, File> {
     		
     		HttpResponse httpResponse = httpClient.execute(httpPost);
     		HttpEntity responseEntity = httpResponse.getEntity();
-    		
-    		File midiFile = new File("/mnt/sdcard/Music/sheet.midi");
+    		String filePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC).getAbsolutePath();
+    		File midiFile = new File(filePath + "/sheet.midi");
     		FileOutputStream os = new FileOutputStream(midiFile);
 
     		BufferedHttpEntity buf = new BufferedHttpEntity(responseEntity);
@@ -71,4 +72,4 @@ class UploadPictureTask extends AsyncTask<File, Void, File> {
     public void setServerUrl(String serverUrl) {
     	this.serverUrl = serverUrl;
     }
- }
+}
