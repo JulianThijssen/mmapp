@@ -18,8 +18,12 @@ import android.util.Log;
 import android.view.View;
 
 public class PhotoView extends View {
+	private static final String NO_IMAGES = "No Images";
+	private static final String CORRUPT_IMAGE = "Corrupt Image";
+	
 	String path = null;
 	File[] photos = null;
+	List<Bitmap> previewList = new ArrayList<Bitmap>();
 	int photoIndex = 0;
 
 	public PhotoView(Context context) {
@@ -41,10 +45,18 @@ public class PhotoView extends View {
 		return 0;
 	}
 	
-	public void reloadPhotos() {		
+	public void reloadPhotos() {	
 		if(path != null) {
 			File dir = new File(path);
 			photos = dir.listFiles();
+			Log.i("Size", "Width: " + getWidth() + " Height: " + getHeight());
+			for(int i = 0; i < photos.length; i++) {
+				if(photos[i].length() > 10) {
+					Bitmap preview = BitmapFactory.decodeFile(photos[i].getAbsolutePath());
+					preview = ImageFilter.scale(preview, getWidth(), getHeight());
+					previewList.add(preview);
+				}
+			}
 			Log.i("Length", "Length: " + photos.length);
 		}
 	}
@@ -73,13 +85,11 @@ public class PhotoView extends View {
 		paint.setAntiAlias(true);
 		paint.setDither(true);
 		paint.setTextSize(textSize);
-		String noimages = "No Images";
-		canvas.drawText(noimages, (getWidth() - paint.getTextSize() * (noimages.length() / 2f))/2, getHeight()/2, paint);
 		
-		Log.i("Photos", "Photos: " + photos + " Index: " + photoIndex);
-		if(photos != null && photos.length > 0) {
-			String filePath = photos[photoIndex].getAbsolutePath();
-			canvas.drawBitmap(BitmapFactory.decodeFile(filePath), 180, 0, paint);
+		if(previewList.size() > 0) {
+			canvas.drawBitmap(previewList.get(photoIndex), 180, 0, paint);
+		} else {
+			canvas.drawText(NO_IMAGES, (getWidth() - paint.getTextSize() * (CORRUPT_IMAGE.length() / 2f))/2, getHeight()/2, paint);
 		}
 	}
 }

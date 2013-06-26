@@ -15,13 +15,12 @@ import android.widget.Button;
 import android.widget.SeekBar;
 
 public class GalleryActivity extends Activity {
-	public static final String HOST = "37.252.124.105";
-	
 	private PhotoView   photoView      = null;
 	private Button      cameraButton   = null;
 	private Button      convertButton  = null;
 	private SeekBar     scrollBar      = null;
 	private SeekBar     rotateSlider   = null;
+	private boolean     buttonsEnabled = true;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +37,10 @@ public class GalleryActivity extends Activity {
 		cameraButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				if(!buttonsEnabled) {
+					return;
+				}
+				buttonsEnabled = false;
 				dispatchTakePictureIntent(1);
 			}
 		});
@@ -45,13 +48,16 @@ public class GalleryActivity extends Activity {
 		convertButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				if(!buttonsEnabled) {
+					return;
+				}
+				buttonsEnabled = false;
 				File photo = photoView.getCurrentPhoto();
 				
 				if (photo == null) {
 					Log.e("Error", "ERR: Take a picture first.");
 				} else {
 					MidiClient midiClient = new MidiClient();
-					midiClient.setServer(HOST);
 					midiClient.uploadPicture(photo);
 				}
 			}
@@ -73,9 +79,10 @@ public class GalleryActivity extends Activity {
 		super.onResume();
 		if(photoView != null) {
 			photoView.reloadPhotos();
-			scrollBar.setMax(photoView.getPhotoCount());
+			scrollBar.setMax(photoView.getPhotoCount() - 1);
 			scrollBar.setProgress(photoView.getPhotoCount() - 1);
 			photoView.invalidate();
+			buttonsEnabled = true;
 		}
 	}
 

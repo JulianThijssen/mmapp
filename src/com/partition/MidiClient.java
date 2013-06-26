@@ -22,7 +22,7 @@ public class MidiClient {
 	}
 	
 	public void setServer(String serverIp) {
-		this.serverUrl = "http://" + serverIp + "/upload.php";
+		this.serverUrl = "http://" + "@string/host" + "/upload.php";
 	}
 	
 	public void uploadPicture(File picture) {
