@@ -60,6 +60,7 @@ public class GalleryActivity extends Activity {
 					MidiClient midiClient = new MidiClient();
 					midiClient.uploadPicture(photo);
 				}
+				dispatchAudioIntent(1);
 			}
 		});
 		
@@ -91,6 +92,11 @@ public class GalleryActivity extends Activity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.gallery, menu);
 		return true;
+	}
+	
+	private void dispatchAudioIntent(int actionCode) {
+		Intent audioIntent = new Intent(this, AudioActivity.class);
+		startActivity(audioIntent);
 	}
 
 	private void dispatchTakePictureIntent(int actionCode) {

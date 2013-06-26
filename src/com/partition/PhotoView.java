@@ -46,7 +46,7 @@ public class PhotoView extends View {
 	}
 	
 	public void reloadPhotos() {	
-		if(path != null && getWidth() > 0) {
+		if(path != null) {
 			File dir = new File(path);
 			photos = dir.listFiles();
 			Log.i("Size", "Width: " + getWidth() + " Height: " + getHeight());
@@ -66,7 +66,10 @@ public class PhotoView extends View {
 	}
 	
 	public File getCurrentPhoto() {
-		return photos[photoIndex];
+		if(photos != null) {
+			return photos[photoIndex];
+		}
+		return null;
 	}
 	
 	public void setPath(String path) {
