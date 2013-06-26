@@ -23,7 +23,7 @@ public class MidiClient {
 	}
 	
 	public void setServer(String serverIp) {
-		this.serverUrl = "http://" + "@string/host" + "/upload.php";
+		this.serverUrl = "http://" + serverIp + "/upload.php";
 	}
 	
 	public void uploadPicture(File picture) {
@@ -40,6 +40,7 @@ class UploadPictureTask extends AsyncTask<File, Void, File> {
     
     protected File doInBackground(File... pictures) {
         try {
+        	Log.i("Server", "URL:" +serverUrl);
     		HttpClient httpClient = new DefaultHttpClient();
     		HttpPost httpPost = new HttpPost(serverUrl);
     		
@@ -53,6 +54,7 @@ class UploadPictureTask extends AsyncTask<File, Void, File> {
     		HttpEntity responseEntity = httpResponse.getEntity();
     		String filePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC).getAbsolutePath();
     		File midiFile = new File(filePath + "/sheet.midi");
+    	
     		FileOutputStream os = new FileOutputStream(midiFile);
 
     		BufferedHttpEntity buf = new BufferedHttpEntity(responseEntity);
@@ -64,7 +66,7 @@ class UploadPictureTask extends AsyncTask<File, Void, File> {
     		return pictures[0];
         } catch (Exception e) {
             this.exception = e;
-            Log.e("ERR", "ERR: " + e);
+            e.printStackTrace();
             return null;
         }
     }

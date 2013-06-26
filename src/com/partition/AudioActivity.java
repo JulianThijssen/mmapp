@@ -58,7 +58,7 @@ public class AudioActivity extends Activity {
 			try {
 				mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
 				File filePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC);
-				Uri myUri1 = Uri.parse(Uri.fromFile(filePath).getPath());
+				Uri myUri1 = Uri.parse(Uri.fromFile(filePath).getPath()+"/sheet.midi");
 				mediaPlayer.setDataSource(getApplicationContext(), myUri1);
 				
 			} catch (Exception e) {

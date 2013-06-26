@@ -21,6 +21,7 @@ public class GalleryActivity extends Activity {
 	private SeekBar     scrollBar      = null;
 	private SeekBar     rotateSlider   = null;
 	private boolean     buttonsEnabled = true;
+	private String      host           = "127.0.0.1";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +34,7 @@ public class GalleryActivity extends Activity {
 		scrollBar       = (SeekBar)findViewById(R.id.scrollBar);
 		
 		photoView.setPath(getAlbumDir().getAbsolutePath());
+		host = getString(R.string.host);
 		
 		cameraButton.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -58,6 +60,7 @@ public class GalleryActivity extends Activity {
 					Log.e("Error", "ERR: Take a picture first.");
 				} else {
 					MidiClient midiClient = new MidiClient();
+					midiClient.setServer(host);
 					midiClient.uploadPicture(photo);
 				}
 				dispatchAudioIntent(1);

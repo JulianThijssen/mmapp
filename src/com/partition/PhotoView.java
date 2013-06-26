@@ -54,6 +54,7 @@ public class PhotoView extends View {
 				if(photos[i].length() > 10) {
 					Bitmap preview = BitmapFactory.decodeFile(photos[i].getAbsolutePath());
 					preview = ImageFilter.scale(preview, 400, 400);
+					preview = ImageFilter.contrast(preview);
 					previewList.add(preview);
 				}
 			}
@@ -90,7 +91,7 @@ public class PhotoView extends View {
 		paint.setTextSize(textSize);
 		
 		if(previewList.size() > 0) {
-			canvas.drawBitmap(previewList.get(photoIndex), 280, 0, paint);
+			canvas.drawBitmap(previewList.get(photoIndex), getWidth()/2 - 200, getHeight()/2 - 200, paint);
 		} else {
 			canvas.drawText(NO_IMAGES, (getWidth() - paint.getTextSize() * (CORRUPT_IMAGE.length() / 2f))/2, getHeight()/2, paint);
 		}
