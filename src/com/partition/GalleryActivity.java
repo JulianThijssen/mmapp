@@ -2,17 +2,12 @@ package com.partition;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -20,9 +15,11 @@ import android.widget.Button;
 import android.widget.SeekBar;
 
 public class GalleryActivity extends Activity {
+	public static final String HOST = "37.252.124.105";
+	
 	private PhotoView   photoView      = null;
 	private Button      cameraButton   = null;
-	private Button      playButton     = null;
+	private Button      convertButton  = null;
 	private SeekBar     scrollBar      = null;
 	private SeekBar     rotateSlider   = null;
 
@@ -33,13 +30,30 @@ public class GalleryActivity extends Activity {
 		
 		photoView 		= (PhotoView)findViewById(R.id.photoView);
 		cameraButton 	= (Button)findViewById(R.id.cameraButton);
-		playButton 		= (Button)findViewById(R.id.playButton);
+		convertButton   = (Button)findViewById(R.id.convertButton);
 		scrollBar       = (SeekBar)findViewById(R.id.scrollBar);
+		
+		photoView.setPath(getAlbumDir().getAbsolutePath());
 		
 		cameraButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				dispatchTakePictureIntent(1);
+			}
+		});
+		
+		convertButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				File photo = photoView.getCurrentPhoto();
+				
+				if (photo == null) {
+					Log.e("Error", "ERR: Take a picture first.");
+				} else {
+					MidiClient midiClient = new MidiClient();
+					midiClient.setServer(HOST);
+					midiClient.uploadPicture(photo);
+				}
 			}
 		});
 		
@@ -57,7 +71,6 @@ public class GalleryActivity extends Activity {
 	
 	protected void onResume() {
 		super.onResume();
-		Log.i("DO ETT", "DO EET");
 		if(photoView != null) {
 			photoView.reloadPhotos();
 			scrollBar.setMax(photoView.getPhotoCount());
@@ -90,10 +103,7 @@ public class GalleryActivity extends Activity {
 	    Log.i("Activity", "Activity Started");
 	}
 	
-	private File createImageFile() throws IOException {
-	    //String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-	    //String imageFileName = "pif_";
-	    
+	private File createImageFile() throws IOException {   
 	    File image = File.createTempFile("IMG_", ".jpg", getAlbumDir());
 	    
 	    return image;

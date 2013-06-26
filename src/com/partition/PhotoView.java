@@ -45,6 +45,7 @@ public class PhotoView extends View {
 		if(path != null) {
 			File dir = new File(path);
 			photos = dir.listFiles();
+			Log.i("Length", "Length: " + photos.length);
 		}
 	}
 	
@@ -75,6 +76,7 @@ public class PhotoView extends View {
 		String noimages = "No Images";
 		canvas.drawText(noimages, (getWidth() - paint.getTextSize() * (noimages.length() / 2f))/2, getHeight()/2, paint);
 		
+		Log.i("Photos", "Photos: " + photos + " Index: " + photoIndex);
 		if(photos != null && photos.length > 0) {
 			String filePath = photos[photoIndex].getAbsolutePath();
 			canvas.drawBitmap(BitmapFactory.decodeFile(filePath), 180, 0, paint);
