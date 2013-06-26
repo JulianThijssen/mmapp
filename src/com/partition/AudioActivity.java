@@ -29,6 +29,7 @@ public class AudioActivity extends Activity {
 		playButton      = (Button)findViewById(R.id.playButton);
 		pauseButton     = (Button)findViewById(R.id.pauseButton);
 		stopButton      = (Button)findViewById(R.id.stopButton);
+		mediaPlayer     = new MediaPlayer();
 		
 		playButton.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -43,6 +44,13 @@ public class AudioActivity extends Activity {
 				stopMIDI();
 			}
 		});
+		
+		mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            public void onCompletion(MediaPlayer mp) {
+            	mediaPlayer.reset();
+            	reset = true;
+            }
+        });
 	}
 
 	protected void playMIDI() {
