@@ -8,31 +8,28 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".GalleryActivity" >
 
-    <Button
-        android:id="@+id/stopButton"
-        style="@style/customButtonStyle"
-        android:layout_width="wrap_content"
+    <SeekBar
+        android:id="@+id/tempoBar"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/pauseButton"
-        android:layout_toRightOf="@+id/pauseButton"
-        android:text="@string/stop_button" />
+        android:layout_centerVertical="true" />
 
     <Button
         android:id="@+id/playButton"
         style="@style/customButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/pauseButton"
-        android:layout_toLeftOf="@+id/pauseButton"
+        android:layout_above="@+id/tempoBar"
+        android:layout_alignLeft="@+id/tempoBar"
         android:text="@string/play_button" />
 
     <Button
-        android:id="@+id/pauseButton"
+        android:id="@+id/stopButton"
         style="@style/customButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-		android:layout_centerHorizontal="true"
-        android:text="@string/pause_button" />
+        android:layout_above="@+id/tempoBar"
+        android:layout_toRightOf="@+id/tempoBar"
+        android:text="@string/stop_button" />
 
 </RelativeLayout>

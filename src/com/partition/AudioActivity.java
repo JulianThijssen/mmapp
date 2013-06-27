@@ -1,6 +1,9 @@
 package com.partition;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 import android.app.Activity;
@@ -16,11 +19,9 @@ import android.widget.SeekBar;
 
 public class AudioActivity extends Activity {
 	private Button		playButton     = null;
-	private Button      pauseButton    = null;
 	private Button      stopButton     = null;
 	private SeekBar     tempoBar       = null;
 	
-	private String path = null;
 	MediaPlayer mediaPlayer = null;
 	private boolean reset = true;
 	
@@ -30,12 +31,11 @@ public class AudioActivity extends Activity {
 		setContentView(R.layout.activity_audio);
 		
 		playButton      = (Button)findViewById(R.id.playButton);
-		pauseButton     = (Button)findViewById(R.id.pauseButton);
 		stopButton      = (Button)findViewById(R.id.stopButton);
+		tempoBar        = (SeekBar) findViewById(R.id.tempoBar);
+		
 		mediaPlayer     = new MediaPlayer();
-		
-		path = getAlbumDir().getAbsolutePath();
-		
+
 		playButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -56,17 +56,24 @@ public class AudioActivity extends Activity {
             	reset = true;
             }
         });
-	}
-	
-	private String getAlbumName() {
-		return getString(R.string.album_name);
+		
+		tempoBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            	mediaPlayer.reset();
+            	reset = true;
+            	changeTempo(progress * 5.12f);
+            }
+            public void onStartTrackingTouch(SeekBar arg0) {}
+            public void onStopTrackingTouch(SeekBar arg0) {}
+		});
 	}
 	
 	private File getAlbumDir() {
 		File storageDir = null;
 		
 		if(Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
-			storageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC), getAlbumName());
+			storageDir = new File(Environment.getExternalStoragePublicDirectory(
+					Environment.DIRECTORY_MUSIC), getString(R.string.album_name));
 
 			if(storageDir != null) {
 				if(!storageDir.mkdirs()) {
@@ -87,7 +94,8 @@ public class AudioActivity extends Activity {
 		if(reset){
 			try {
 				mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-				File filePath = new File(path + "/" + getString(R.string.default_music_name));
+				Log.i("PATH", "Path: " + getAlbumDir());
+				File filePath = new File(getAlbumDir() + "/" + getString(R.string.midi_name));
 				Uri uri = Uri.fromFile(filePath);
 				mediaPlayer.setDataSource(getApplicationContext(), uri);
 			} catch (Exception e) {
@@ -101,7 +109,7 @@ public class AudioActivity extends Activity {
 				Log.d("MIDI", "Failed to prepare media player, IO Exception");
 			}
 		}
-		if(!mediaPlayer.isPlaying()){
+		if(!mediaPlayer.isPlaying()) {
 			mediaPlayer.start();
 			reset = false;
 		} else
@@ -111,5 +119,48 @@ public class AudioActivity extends Activity {
 	protected void stopMIDI() {
 		mediaPlayer.reset();
 		reset = true;
+	}
+	
+	private void changeTempo(float tempo) {
+    	byte[] buffer, bytes;
+    	File file, someFile;
+    	FileInputStream file_in;
+    	FileOutputStream file_out;
+    	ByteArrayOutputStream byte_out;
+    	
+    	try {
+    		file = new File(getAlbumDir() + "/" + getString(R.string.midi_name));
+    		file_in = new FileInputStream(file);
+    		byte_out = new ByteArrayOutputStream();
+    		buffer = new byte[1024];
+    		try {
+    			for (int i; (i = file_in.read(buffer)) != -1;)
+    				byte_out.write(buffer, 0, i);
+    		} catch (IOException e) {
+	        	 e.printStackTrace();
+    		}
+    		bytes = byte_out.toByteArray();
+    		Log.e("12",Integer.toString(bytes[12]));
+    		Log.e("13",Integer.toString(bytes[13]));
+    		Log.e("tempo",Float.toString(tempo));
+
+    		//1
+    		//-32
+    		bytes[12] = (byte) (tempo / 128);
+    	    bytes[13] = (byte) (tempo % 128);
+    	    
+    	    Log.e("12",Integer.toString(bytes[12]));
+    		Log.e("13",Integer.toString(bytes[13]));
+    		Log.e("tempo",Float.toString(tempo));
+
+    	    
+	        someFile = new File(getAlbumDir() + "/" + getString(R.string.midi_name));
+	        file_out = new FileOutputStream(someFile);
+	        file_out.write(bytes);
+	        file_out.flush();
+	        file_out.close();
+    	} catch (Exception e) {
+ 			e.printStackTrace();
+    	}		
 	}
 }

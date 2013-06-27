@@ -19,16 +19,21 @@ import android.util.Log;
 
 public class MidiClient extends AsyncTask<File, Void, File> {
 	private HttpClient 	 httpClient = null;
-	private HttpPost 	 httpPost = null;
-	private String		 host;
-	private String		 defaultName = "default.midi";
+	private HttpPost 	 httpPost   = null;
+	private String		 host       = null;
+	private String       path       = null;
+	private String		 midiName   = "default.midi";
 	
 	public void setHost(String host) {
 		this.host = "http://" + host + "/upload.php";
 	}
 	
-	public void setDefaultFileName(String defaultName) {
-		this.defaultName = defaultName;
+	public void setPath(String path) {
+		this.path = path;
+	}
+	
+	public void setMidiFileName(String midiName) {
+		this.midiName = midiName;
 	}
 	
 	public void uploadPhoto(File photo) {
@@ -63,9 +68,7 @@ public class MidiClient extends AsyncTask<File, Void, File> {
 		
 		//Save the MIDI at the specified path
 		try {
-			String filePath = Environment.getExternalStoragePublicDirectory(
-							  Environment.DIRECTORY_MUSIC).getAbsolutePath()
-							  + "/" + defaultName;
+			String filePath = path + "/" + midiName;
 			Log.d("PATH", "Path: " + filePath);
 			File midiFile = new File(filePath);
 			

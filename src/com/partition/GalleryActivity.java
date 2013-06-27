@@ -19,6 +19,7 @@ public class GalleryActivity extends Activity {
 	private Button      cameraButton   = null;
 	private Button      convertButton  = null;
 	private SeekBar     scrollBar      = null;
+	private MidiClient  midiClient     = null;
 	private boolean     buttonsEnabled = true;
 
 	@Override
@@ -30,6 +31,8 @@ public class GalleryActivity extends Activity {
 		cameraButton 	= (Button)findViewById(R.id.cameraButton);
 		convertButton   = (Button)findViewById(R.id.convertButton);
 		scrollBar       = (SeekBar)findViewById(R.id.scrollBar);
+		
+		midiClient = new MidiClient();
 		
 		photoView.setPath(getAlbumDir().getAbsolutePath());
 		
@@ -56,9 +59,9 @@ public class GalleryActivity extends Activity {
 				if (photo == null) {
 					Log.e("Error", "ERR: Take a picture first.");
 				} else {
-					MidiClient midiClient = new MidiClient();
 					midiClient.setHost(getString(R.string.host));
-					midiClient.setDefaultFileName(getString(R.string.default_music_name));
+					midiClient.setPath(getMusicPath().getAbsolutePath() + "/" + getString(R.string.album_name));
+					midiClient.setMidiFileName(getString(R.string.midi_name));
 					midiClient.uploadPhoto(photo);
 				}
 				dispatchAudioIntent(1);
@@ -135,15 +138,21 @@ public class GalleryActivity extends Activity {
 		}
 	}
 	
-	private String getAlbumName() {
-		return getString(R.string.album_name);
+	private File getPhotoPath() {
+		return Environment.getExternalStoragePublicDirectory(
+			   Environment.DIRECTORY_PICTURES);
+	}
+	
+	private File getMusicPath() {
+		return Environment.getExternalStoragePublicDirectory(
+			   Environment.DIRECTORY_MUSIC);
 	}
 	
 	private File getAlbumDir() {
 		File storageDir = null;
 		
 		if(Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
-			storageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), getAlbumName());
+			storageDir = new File(getPhotoPath(), getString(R.string.album_name));
 
 			if(storageDir != null) {
 				if(!storageDir.mkdirs()) {
