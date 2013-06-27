@@ -10,15 +10,17 @@
 
     <SeekBar
         android:id="@+id/tempoBar"
-        android:layout_width="200dp"
+        android:layout_width="400dp"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true" />
+        android:layout_centerVertical="true"
+        android:max="100"
+        android:progress="50" />
 
     <Button
         android:id="@+id/playButton"
         style="@style/customButtonStyle"
-        android:layout_width="100dp"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_above="@+id/tempoBar"
         android:layout_alignLeft="@+id/tempoBar"
@@ -28,7 +30,7 @@
     <Button
         android:id="@+id/stopButton"
         style="@style/customButtonStyle"
-        android:layout_width="100dp"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_above="@+id/tempoBar"
         android:layout_toRightOf="@+id/playButton"

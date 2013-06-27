@@ -33,7 +33,7 @@ public class AudioActivity extends Activity {
 		playButton      = (Button)findViewById(R.id.playButton);
 		stopButton      = (Button)findViewById(R.id.stopButton);
 		tempoBar        = (SeekBar) findViewById(R.id.tempoBar);
-		
+
 		mediaPlayer     = new MediaPlayer();
 
 		playButton.setOnClickListener(new View.OnClickListener() {
@@ -94,10 +94,12 @@ public class AudioActivity extends Activity {
 		if(reset){
 			try {
 				mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-				Log.i("PATH", "Path: " + getAlbumDir());
 				File filePath = new File(getAlbumDir() + "/" + getString(R.string.midi_name));
+				Log.d("PATH", "Trying to play MIDI from: " + filePath);
 				Uri uri = Uri.fromFile(filePath);
+				Log.d("DEE", "DEE");
 				mediaPlayer.setDataSource(getApplicationContext(), uri);
+				Log.d("DOO", "DOO");
 			} catch (Exception e) {
 				Log.d("MIDI", "Failed to set data source");
 			}		
@@ -140,19 +142,9 @@ public class AudioActivity extends Activity {
 	        	 e.printStackTrace();
     		}
     		bytes = byte_out.toByteArray();
-    		Log.e("12",Integer.toString(bytes[12]));
-    		Log.e("13",Integer.toString(bytes[13]));
-    		Log.e("tempo",Float.toString(tempo));
 
-    		//1
-    		//-32
     		bytes[12] = (byte) (tempo / 128);
     	    bytes[13] = (byte) (tempo % 128);
-    	    
-    	    Log.e("12",Integer.toString(bytes[12]));
-    		Log.e("13",Integer.toString(bytes[13]));
-    		Log.e("tempo",Float.toString(tempo));
-
     	    
 	        someFile = new File(getAlbumDir() + "/" + getString(R.string.midi_name));
 	        file_out = new FileOutputStream(someFile);

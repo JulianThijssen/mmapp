@@ -68,7 +68,6 @@ public class MidiClient extends AsyncTask<File, Void, File> {
 		//Save the MIDI at the specified path
 		try {
 			String filePath = path + "/" + midiName;
-			Log.d("PATH", "Path: " + filePath);
 			File midiFile = new File(filePath);
 			
 			FileOutputStream os = new FileOutputStream(midiFile);
@@ -77,6 +76,7 @@ public class MidiClient extends AsyncTask<File, Void, File> {
 			while (buf.isStreaming()) {
 			   buf.writeTo(os);
 			}
+			Log.d("PATH", "MIDI saved at : " + filePath);
 		} catch(IOException e) {
 			Log.d("HTTP", "Failed to store MIDI at the specified path");
 		}
