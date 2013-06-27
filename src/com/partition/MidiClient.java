@@ -14,7 +14,6 @@ import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.ContentBody;
 import org.apache.http.entity.mime.content.FileBody;
 import android.os.AsyncTask;
-import android.os.Environment;
 import android.util.Log;
 
 public class MidiClient extends AsyncTask<File, Void, File> {
