@@ -17,11 +17,17 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 public class MidiClient extends AsyncTask<File, Void, File> {
-	private HttpClient 	 httpClient = null;
-	private HttpPost 	 httpPost   = null;
-	private String		 host       = null;
-	private String       path       = null;
-	private String		 midiName   = "default.midi";
+	private GalleryActivity gallery    = null;
+	private HttpClient 	    httpClient = null;
+	private HttpPost 	    httpPost   = null;
+	private String		    host       = null;
+	private String          path       = null;
+	private String		    midiName   = "default.midi";
+	private boolean         success    = false;
+	
+	public void setGallery(GalleryActivity gallery) {
+		this.gallery = gallery;
+	}
 	
 	public void setHost(String host) {
 		this.host = "http://" + host + "/upload.php";
@@ -47,7 +53,10 @@ public class MidiClient extends AsyncTask<File, Void, File> {
 			Log.d("HTTP", "Failed to initialize HTTP Post");
 		}
 	}
+	
 	protected File doInBackground(File... pictures) {
+		File midiFile = null;
+
 		//Initialize the http client
 		init();
 		
@@ -60,7 +69,13 @@ public class MidiClient extends AsyncTask<File, Void, File> {
 		HttpEntity responseEntity = null;
 		try {
 			HttpResponse httpResponse = httpClient.execute(httpPost);
+			if (httpResponse.getStatusLine().getStatusCode() == 500) {
+				success = false;
+				return null;
+			}
+			
 			responseEntity = httpResponse.getEntity();
+			
 		} catch(Exception e) {
 			Log.d("HTTP", "Failed to execute HTTP Post");
 		}
@@ -68,7 +83,7 @@ public class MidiClient extends AsyncTask<File, Void, File> {
 		//Save the MIDI at the specified path
 		try {
 			String filePath = path + "/" + midiName;
-			File midiFile = new File(filePath);
+			midiFile = new File(filePath);
 			
 			FileOutputStream os = new FileOutputStream(midiFile);
 			BufferedHttpEntity buf = new BufferedHttpEntity(responseEntity);
@@ -76,11 +91,21 @@ public class MidiClient extends AsyncTask<File, Void, File> {
 			while (buf.isStreaming()) {
 			   buf.writeTo(os);
 			}
-			Log.d("PATH", "MIDI saved at : " + filePath);
+			Log.d("MIDI", "Successfully saved MIDI at: " + filePath);
+			success = true;
 		} catch(IOException e) {
 			Log.d("HTTP", "Failed to store MIDI at the specified path");
 		}
 			
-		return null;
+		return midiFile;
+    }
+	
+    protected void onPostExecute(File midi) {
+    	if(success) {
+    		gallery.dispatchAudioIntent(1);
+    	} else {
+    		gallery.hideProgress();
+    		gallery.showStatus();
+    	}
     }
 }

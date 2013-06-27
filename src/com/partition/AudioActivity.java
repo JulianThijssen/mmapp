@@ -32,8 +32,8 @@ public class AudioActivity extends Activity {
 		
 		playButton      = (Button)findViewById(R.id.playButton);
 		stopButton      = (Button)findViewById(R.id.stopButton);
-		tempoBar        = (SeekBar) findViewById(R.id.tempoBar);
-
+		tempoBar        = (SeekBar)findViewById(R.id.tempoBar);
+		
 		mediaPlayer     = new MediaPlayer();
 
 		playButton.setOnClickListener(new View.OnClickListener() {

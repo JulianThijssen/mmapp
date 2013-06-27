@@ -12,13 +12,17 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.SeekBar;
+import android.widget.TextView;
 
 public class GalleryActivity extends Activity {
 	private PhotoView   photoView      = null;
 	private Button      cameraButton   = null;
 	private Button      convertButton  = null;
 	private SeekBar     scrollBar      = null;
+	public  TextView    status         = null;
+	public  ProgressBar progressBar    = null;
 	private MidiClient  midiClient     = null;
 	private boolean     buttonsEnabled = true;
 
@@ -31,10 +35,13 @@ public class GalleryActivity extends Activity {
 		cameraButton 	= (Button)findViewById(R.id.cameraButton);
 		convertButton   = (Button)findViewById(R.id.convertButton);
 		scrollBar       = (SeekBar)findViewById(R.id.scrollBar);
-		
-		midiClient = new MidiClient();
+		status          = (TextView)findViewById(R.id.status);
+		progressBar     = (ProgressBar)findViewById(R.id.progressBar);
 		
 		photoView.setPath(getAlbumDir().getAbsolutePath());
+		
+		hideStatus();
+		hideProgress();
 		
 		cameraButton.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -53,18 +60,19 @@ public class GalleryActivity extends Activity {
 				if(!buttonsEnabled) {
 					return;
 				}
-				buttonsEnabled = false;
+				showProgress();
 				File photo = photoView.getCurrentPhoto();
 				
 				if (photo == null) {
 					Log.e("Error", "ERR: Take a picture first.");
 				} else {
+					midiClient = new MidiClient();
+					midiClient.setGallery(GalleryActivity.this);
 					midiClient.setHost(getString(R.string.host));
 					midiClient.setPath(getMusicPath().getAbsolutePath() + "/" + getString(R.string.album_name));
 					midiClient.setMidiFileName(getString(R.string.midi_name));
 					midiClient.uploadPhoto(photo);
 				}
-				dispatchAudioIntent(1);
 			}
 		});
 		
@@ -99,7 +107,7 @@ public class GalleryActivity extends Activity {
 		return true;
 	}
 	
-	private void dispatchAudioIntent(int actionCode) {
+	protected void dispatchAudioIntent(int actionCode) {
 		Intent audioIntent = new Intent(this, AudioActivity.class);
 		startActivity(audioIntent);
 	}
@@ -110,7 +118,6 @@ public class GalleryActivity extends Activity {
 
 	    try {
 			File f = createImageFile();
-			Log.i("Path", Uri.fromFile(f) + "");
 		    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -136,6 +143,24 @@ public class GalleryActivity extends Activity {
 				files[i].delete();
 			}
 		}
+	}
+	
+	public void hideStatus() {
+		status.setVisibility(View.INVISIBLE);
+	}
+	
+	public void showStatus() {
+		status.setVisibility(View.VISIBLE);
+	}
+	
+	public void hideProgress() {
+		progressBar.setVisibility(View.INVISIBLE);
+		buttonsEnabled = true;
+	}
+	
+	public void showProgress() {
+		progressBar.setVisibility(View.VISIBLE);
+		buttonsEnabled = false;
 	}
 	
 	private File getPhotoPath() {

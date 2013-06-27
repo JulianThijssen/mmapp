@@ -11,5 +11,6 @@
     <string name="stop_button">Stop</string>
     <string name="album_name">Partition</string>
     <string name="midi_name">Partition.midi</string>
+    <string name="upload_failed">Conversion failed, Please try again</string>
 
 </resources>

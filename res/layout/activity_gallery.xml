@@ -13,29 +13,46 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+	<SeekBar
+	android:id="@+id/scrollBar"
+	android:layout_width="400dp"
+	android:layout_height="wrap_content"
+	android:layout_alignBottom="@+id/photoView"
+	android:layout_centerHorizontal="true" />
+	
+   <Button
+       android:id="@+id/cameraButton"
+       style="@style/customButtonStyle"
+       android:layout_width="200dp"
+       android:layout_height="wrap_content"
+       android:layout_above="@+id/scrollBar"
+       android:layout_alignLeft="@+id/scrollBar"
+       android:text="@string/camera_text" />
+   
     <Button
         android:id="@+id/convertButton"
         style="@style/customButtonStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/photoView"
-        android:layout_toRightOf="@+id/scrollBar"
-        android:text="@string/convert_button" />
-
-    <SeekBar
-        android:id="@+id/scrollBar"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/photoView"
-        android:layout_centerHorizontal="true" />
-
-    <Button
-        android:id="@+id/cameraButton"
-        style="@style/customButtonStyle"
+        android:layout_above="@+id/scrollBar"
+        android:layout_toRightOf="@+id/cameraButton"
+        android:text="@string/convert_button" />
+    
+	<TextView
+        android:id="@+id/status"
+        android:textColor="#FFFF0000"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/photoView"
-        android:layout_toLeftOf="@+id/scrollBar"
-        android:text="@string/camera_text" />
+        android:layout_above="@+id/cameraButton"
+        android:layout_centerHorizontal="true"
+        android:text="@string/upload_failed"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true" />
 </RelativeLayout>

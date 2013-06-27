@@ -10,12 +10,10 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
 public class PhotoView extends View {
 	private static final String NO_IMAGES = "No Images";
-	private static final String CORRUPT_IMAGE = "Corrupt Image";
 	private static final int    BACKGROUND_COLOR = 0xFF303030;
 	
 	String path = null;
@@ -59,7 +57,6 @@ public class PhotoView extends View {
 	}
 	
 	public void setPhotoIndex(int index) {
-		Log.d("index", "index: "+ index);
 		photoIndex = index;
 	}
 	
@@ -90,7 +87,7 @@ public class PhotoView extends View {
 		if(previewList.size() > 0) {
 			canvas.drawBitmap(previewList.get(photoIndex), getWidth()/2 - 200, getHeight()/2 - 200, paint);
 		} else {
-			canvas.drawText(NO_IMAGES, (getWidth() - paint.getTextSize() * (CORRUPT_IMAGE.length() / 2f))/2, getHeight()/2, paint);
+			canvas.drawText(NO_IMAGES, (getWidth() - paint.getTextSize() * (NO_IMAGES.length() / 2f))/2, getHeight()/2, paint);
 		}
 	}
 }
