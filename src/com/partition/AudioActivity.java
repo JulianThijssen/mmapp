@@ -97,9 +97,7 @@ public class AudioActivity extends Activity {
 				File filePath = new File(getAlbumDir() + "/" + getString(R.string.midi_name));
 				Log.d("PATH", "Trying to play MIDI from: " + filePath);
 				Uri uri = Uri.fromFile(filePath);
-				Log.d("DEE", "DEE");
 				mediaPlayer.setDataSource(getApplicationContext(), uri);
-				Log.d("DOO", "DOO");
 			} catch (Exception e) {
 				Log.d("MIDI", "Failed to set data source");
 			}		
