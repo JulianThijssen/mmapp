@@ -15,7 +15,7 @@
 
     <Button
         android:id="@+id/convertButton"
-        style="@style/btnStyleSandrift"
+        style="@style/customButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/photoView"
@@ -31,7 +31,7 @@
 
     <Button
         android:id="@+id/cameraButton"
-        style="@style/btnStyleSandrift"
+        style="@style/customButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/photoView"

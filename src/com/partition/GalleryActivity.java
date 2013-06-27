@@ -19,9 +19,7 @@ public class GalleryActivity extends Activity {
 	private Button      cameraButton   = null;
 	private Button      convertButton  = null;
 	private SeekBar     scrollBar      = null;
-	private SeekBar     rotateSlider   = null;
 	private boolean     buttonsEnabled = true;
-	private String      host           = "127.0.0.1";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +32,6 @@ public class GalleryActivity extends Activity {
 		scrollBar       = (SeekBar)findViewById(R.id.scrollBar);
 		
 		photoView.setPath(getAlbumDir().getAbsolutePath());
-		host = getString(R.string.host);
 		
 		cameraButton.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -60,8 +57,9 @@ public class GalleryActivity extends Activity {
 					Log.e("Error", "ERR: Take a picture first.");
 				} else {
 					MidiClient midiClient = new MidiClient();
-					midiClient.setServer(host);
-					midiClient.uploadPicture(photo);
+					midiClient.setHost(getString(R.string.host));
+					midiClient.setDefaultFileName(getString(R.string.default_music_name));
+					midiClient.uploadPhoto(photo);
 				}
 				dispatchAudioIntent(1);
 			}
@@ -82,6 +80,7 @@ public class GalleryActivity extends Activity {
 	protected void onResume() {
 		super.onResume();
 		if(photoView != null) {
+			deleteUnusedFiles();
 			photoView.reloadPhotos();
 			scrollBar.setMax(photoView.getPhotoCount() - 1);
 			scrollBar.setProgress(photoView.getPhotoCount() - 1);
@@ -123,6 +122,17 @@ public class GalleryActivity extends Activity {
 	    File image = File.createTempFile("IMG_", ".jpg", getAlbumDir());
 	    
 	    return image;
+	}
+	
+	private void deleteUnusedFiles() {
+		File filePath = getAlbumDir();
+		File[] files = filePath.listFiles();
+		for(int i = 0; i < files.length; i++) {
+			//Delete the file if it is empty
+			if(files[i].length() == 0) {
+				files[i].delete();
+			}
+		}
 	}
 	
 	private String getAlbumName() {

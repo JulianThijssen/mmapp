@@ -10,7 +10,7 @@
 
     <Button
         android:id="@+id/stopButton"
-        style="@style/btnStyleSandrift"
+        style="@style/customButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/pauseButton"
@@ -19,7 +19,7 @@
 
     <Button
         android:id="@+id/playButton"
-        style="@style/btnStyleSandrift"
+        style="@style/customButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/pauseButton"
@@ -28,7 +28,7 @@
 
     <Button
         android:id="@+id/pauseButton"
-        style="@style/btnStyleSandrift"
+        style="@style/customButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"

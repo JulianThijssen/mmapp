@@ -2,6 +2,8 @@ package com.partition;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
@@ -15,63 +17,68 @@ import android.os.AsyncTask;
 import android.os.Environment;
 import android.util.Log;
 
-public class MidiClient {
-	protected String serverUrl;
+public class MidiClient extends AsyncTask<File, Void, File> {
+	private HttpClient 	 httpClient = null;
+	private HttpPost 	 httpPost = null;
+	private String		 host;
+	private String		 defaultName = "default.midi";
 	
-	public MidiClient() {
-
+	public void setHost(String host) {
+		this.host = "http://" + host + "/upload.php";
 	}
 	
-	public void setServer(String serverIp) {
-		this.serverUrl = "http://" + serverIp + "/upload.php";
+	public void setDefaultFileName(String defaultName) {
+		this.defaultName = defaultName;
 	}
 	
-	public void uploadPicture(File picture) {
-		UploadPictureTask uploadPictureTask = new UploadPictureTask();
-		uploadPictureTask.setServerUrl(serverUrl);
-		uploadPictureTask.execute(picture);
+	public void uploadPhoto(File photo) {
+		execute(photo);
 	}
-}
-
-class UploadPictureTask extends AsyncTask<File, Void, File> {
-
-    private Exception exception;
-    protected String serverUrl;
-    
-    protected File doInBackground(File... pictures) {
-        try {
-        	Log.i("Server", "URL:" +serverUrl);
-    		HttpClient httpClient = new DefaultHttpClient();
-    		HttpPost httpPost = new HttpPost(serverUrl);
-    		
-    		MultipartEntity mpEntity = new MultipartEntity();
-    	    ContentBody cbFile = new FileBody(pictures[0], "image/jpeg");
-    	    mpEntity.addPart("userfile", cbFile);
-    	    
-    		httpPost.setEntity(mpEntity);
-    		
-    		HttpResponse httpResponse = httpClient.execute(httpPost);
-    		HttpEntity responseEntity = httpResponse.getEntity();
-    		String filePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC).getAbsolutePath();
-    		File midiFile = new File(filePath + "/sheet.midi");
-    	
-    		FileOutputStream os = new FileOutputStream(midiFile);
-
-    		BufferedHttpEntity buf = new BufferedHttpEntity(responseEntity);
-    		buf.writeTo(os);
-    		while (buf.isStreaming()) {
-    		   buf.writeTo(os);
-    		}
-    		
-    		return pictures[0];
-        } catch (Exception e) {
-            this.exception = e;
-            e.printStackTrace();
-            return null;
-        }
-    }
-    
-    public void setServerUrl(String serverUrl) {
-    	this.serverUrl = serverUrl;
+	
+	public void init() {
+		try {
+			httpClient = new DefaultHttpClient();
+			httpPost = new HttpPost(host);
+		} catch(IllegalArgumentException e) {
+			Log.d("HTTP", "Failed to initialize HTTP Post");
+		}
+	}
+	protected File doInBackground(File... pictures) {
+		//Initialize the http client
+		init();
+		
+		MultipartEntity mpEntity = new MultipartEntity();
+	    ContentBody cbFile = new FileBody(pictures[0], "image/jpeg");
+	    mpEntity.addPart("userfile", cbFile);
+	    
+		httpPost.setEntity(mpEntity);
+		
+		HttpEntity responseEntity = null;
+		try {
+			HttpResponse httpResponse = httpClient.execute(httpPost);
+			responseEntity = httpResponse.getEntity();
+		} catch(Exception e) {
+			Log.d("HTTP", "Failed to execute HTTP Post");
+		}
+		
+		//Save the MIDI at the specified path
+		try {
+			String filePath = Environment.getExternalStoragePublicDirectory(
+							  Environment.DIRECTORY_MUSIC).getAbsolutePath()
+							  + "/" + defaultName;
+			Log.d("PATH", "Path: " + filePath);
+			File midiFile = new File(filePath);
+			
+			FileOutputStream os = new FileOutputStream(midiFile);
+			BufferedHttpEntity buf = new BufferedHttpEntity(responseEntity);
+			buf.writeTo(os);
+			while (buf.isStreaming()) {
+			   buf.writeTo(os);
+			}
+		} catch(IOException e) {
+			Log.d("HTTP", "Failed to store MIDI at the specified path");
+		}
+			
+		return null;
     }
 }

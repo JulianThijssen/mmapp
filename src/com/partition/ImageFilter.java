@@ -2,7 +2,6 @@ package com.partition;
 
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
-import android.util.Log;
 
 public class ImageFilter {
 	public static int CUT_OFF = 100;
@@ -26,15 +25,13 @@ public class ImageFilter {
 	}
 	
 	public static Bitmap scale(Bitmap image, int width, int height) {
-		Log.v("Bitmap", "Bitmap: " + image.getWidth() + " " + image.getHeight());
 		int srcwidth = image.getWidth();
 		int srcheight = image.getHeight();
 		float xRatio = ((float) width) / srcwidth;
 		float yRatio = ((float) height) / srcheight;
 		Matrix matrix = new Matrix();
 		matrix.postScale(xRatio, yRatio);
-		Log.v("Bitmap", "Bitmap: " + width + " " + height);
-		Log.v("Matrix", "Matrix: " + matrix.toShortString());
+
 		Bitmap newimage = Bitmap.createBitmap(image, 0, 0, srcwidth, srcheight, matrix, false);
 		return newimage;
 	}
