@@ -98,6 +98,8 @@ public class GalleryActivity extends Activity {
 	 */
 	protected void onResume() {
 		super.onResume();
+		hideProgress();
+		hideStatus();
 		if(photoView != null) {
 			deleteUnusedFiles();
 			photoView.reloadPhotos();
