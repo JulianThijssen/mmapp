@@ -61,7 +61,7 @@ public class AudioActivity extends Activity {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
             	mediaPlayer.reset();
             	reset = true;
-            	changeTempo(progress * 5.12f);
+            	changeTempo(progress * 20.12f);
             }
             public void onStartTrackingTouch(SeekBar arg0) {}
             public void onStopTrackingTouch(SeekBar arg0) {}
