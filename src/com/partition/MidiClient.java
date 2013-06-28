@@ -29,22 +29,29 @@ public class MidiClient extends AsyncTask<File, Void, File> {
 		this.gallery = gallery;
 	}
 	
+	/** Sets the host uri which to send the photo to */
 	public void setHost(String host) {
 		this.host = "http://" + host + "/upload.php";
 	}
 	
+	/** Sets the path which to retrieve photos from */
 	public void setPath(String path) {
 		this.path = path;
 	}
 	
+	/** Sets the name of the MIDI file where the result of the query
+	 *  will be stored. */
 	public void setMidiFileName(String midiName) {
 		this.midiName = midiName;
 	}
 	
+	/** Uploads the photo to the web service, which will convert it
+	 *  and store the resulting MIDI file. */
 	public void uploadPhoto(File photo) {
 		execute(photo);
 	}
 	
+	/** Initializes the HTTP client and HTTP post objects */
 	public void init() {
 		try {
 			httpClient = new DefaultHttpClient();
@@ -54,6 +61,10 @@ public class MidiClient extends AsyncTask<File, Void, File> {
 		}
 	}
 	
+	/** This function executes asynchronously and performs all the tasks
+	 *  necessary to send the photo to the web service and retrieve the midi
+	 *  file and store it.
+	 */
 	protected File doInBackground(File... pictures) {
 		File midiFile = null;
 
@@ -78,6 +89,8 @@ public class MidiClient extends AsyncTask<File, Void, File> {
 			
 		} catch(Exception e) {
 			Log.d("HTTP", "Failed to execute HTTP Post");
+			success = false;
+			return null;
 		}
 		
 		//Save the MIDI at the specified path
@@ -100,6 +113,10 @@ public class MidiClient extends AsyncTask<File, Void, File> {
 		return midiFile;
     }
 	
+	/** This will get executed once doInBackground() finishes and either
+	 *  dispatches an audio intent on succesful conversion or hides the
+	 *  progress bar and shows an error message on failure.
+	 */
     protected void onPostExecute(File midi) {
     	if(success) {
     		gallery.dispatchAudioIntent(1);

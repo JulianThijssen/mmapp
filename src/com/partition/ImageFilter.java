@@ -4,8 +4,15 @@ import android.graphics.Bitmap;
 import android.graphics.Matrix;
 
 public class ImageFilter {
-	public static int CUT_OFF = 100;
+	public static int CUT_OFF = 90;
 	
+	/** Contrasts an bitmap by looking at each component in each pixel and 
+	 *  seeing if all the components are above the cut-off value. If they
+	 *  are make the pixel value white, if they aren't, make it black.
+	 *  
+	 * @param   image   The bitmap to be contrasted
+	 * @return          Returns the contrasted bitmap
+	 */
 	public static Bitmap contrast(Bitmap image) {
 		for(int x = 0; x < image.getWidth(); x++) {
 			for(int y = 0; y < image.getHeight(); y++) {
@@ -24,6 +31,13 @@ public class ImageFilter {
 		return image;
 	}
 	
+	/** Scales a bitmap by using a scaling matrix
+	 * 
+	 * @param   image    The bitmap to be scaled
+	 * @param   width    The new width of the bitmap
+	 * @param   height   The new height of the bitmap
+	 * @return           Returns the scaled bitmap
+	 */
 	public static Bitmap scale(Bitmap image, int width, int height) {
 		int srcwidth = image.getWidth();
 		int srcheight = image.getHeight();

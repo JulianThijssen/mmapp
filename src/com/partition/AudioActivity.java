@@ -68,6 +68,11 @@ public class AudioActivity extends Activity {
 		});
 	}
 	
+	/** Get a directory reference to the directory called after our album name
+	 *  in the public path to the Music folder.
+	 *  
+	 * @return    Returns a file descriptor of the directory
+	 */
 	private File getAlbumDir() {
 		File storageDir = null;
 		
@@ -90,6 +95,7 @@ public class AudioActivity extends Activity {
 		return storageDir;
 	}
 
+	/** Plays the MIDI file */
 	protected void playMIDI() {
 		if(reset){
 			try {
@@ -116,11 +122,13 @@ public class AudioActivity extends Activity {
 			mediaPlayer.pause();
 	}
 	
+	/** Stops playing the MIDI file */
 	protected void stopMIDI() {
 		mediaPlayer.reset();
 		reset = true;
 	}
 	
+	/** Changing the tempo at which the MIDI file will be played */
 	private void changeTempo(float tempo) {
     	byte[] buffer, bytes;
     	File file, someFile;

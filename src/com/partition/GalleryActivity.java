@@ -26,6 +26,9 @@ public class GalleryActivity extends Activity {
 	private MidiClient  midiClient     = null;
 	private boolean     buttonsEnabled = true;
 
+	/* This function gets called when an activity starts. (non-Javadoc)
+	 * @see android.app.Activity#onCreate()
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -40,6 +43,7 @@ public class GalleryActivity extends Activity {
 		
 		photoView.setPath(getAlbumDir().getAbsolutePath());
 		
+		//Hide the views we do not need yet
 		hideStatus();
 		hideProgress();
 		
@@ -88,6 +92,10 @@ public class GalleryActivity extends Activity {
 		});
 	}
 	
+	/* This function gets called when an activity starts, after onStart,
+	 * or after another activity returns here. (non-Javadoc)
+	 * @see android.app.Activity#onResume()
+	 */
 	protected void onResume() {
 		super.onResume();
 		if(photoView != null) {
@@ -112,6 +120,10 @@ public class GalleryActivity extends Activity {
 		startActivity(audioIntent);
 	}
 
+	/* Dispatch an intent to start the camera activity
+	 * 
+	 * @param   actionCode   Any integer to clarify your intent
+	 */
 	private void dispatchTakePictureIntent(int actionCode) {
 		photoView.setPath(getAlbumDir().getAbsolutePath());
 	    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -128,12 +140,17 @@ public class GalleryActivity extends Activity {
 	    Log.i("Activity", "Activity Started");
 	}
 	
+	/* Create a new image file to store the result of the camera activity in
+	 * 
+	 * @return    Returns a file descriptor to the new image file
+	 */
 	private File createImageFile() throws IOException {   
 	    File image = File.createTempFile("IMG_", ".jpg", getAlbumDir());
 	    
 	    return image;
 	}
 	
+	/** Deletes any corrupt or incomplete files from the Pictures folder */
 	private void deleteUnusedFiles() {
 		File filePath = getAlbumDir();
 		File[] files = filePath.listFiles();
@@ -145,34 +162,45 @@ public class GalleryActivity extends Activity {
 		}
 	}
 	
+	/** Hides the status bar from the gallery view */
 	public void hideStatus() {
 		status.setVisibility(View.INVISIBLE);
 	}
 	
+	/** Shows the status bar in the gallery view */
 	public void showStatus() {
 		status.setVisibility(View.VISIBLE);
 	}
 	
+	/** Hides the progress bar, call when the application is not busy */
 	public void hideProgress() {
 		progressBar.setVisibility(View.INVISIBLE);
 		buttonsEnabled = true;
 	}
 	
+	/** Shows the progress bar, call when the application is busy */
 	public void showProgress() {
 		progressBar.setVisibility(View.VISIBLE);
 		buttonsEnabled = false;
 	}
 	
+	/** Get the public path on any device to the Pictures folder */
 	private File getPhotoPath() {
 		return Environment.getExternalStoragePublicDirectory(
 			   Environment.DIRECTORY_PICTURES);
 	}
 	
+	/** Get the public path on any device to the Music folder */
 	private File getMusicPath() {
 		return Environment.getExternalStoragePublicDirectory(
 			   Environment.DIRECTORY_MUSIC);
 	}
 	
+	/** Get a directory reference to the directory called after our album name
+	 *  in the public path to the Pictures folder.
+	 *  
+	 * @return    Returns a file descriptor of the directory
+	 */
 	private File getAlbumDir() {
 		File storageDir = null;
 		

@@ -33,6 +33,7 @@ public class PhotoView extends View {
 		super(context, attributes, style);
 	}
 	
+	/** Returns the amount of photos currently in the gallery */
 	public int getPhotoCount() {
 		if(previewList != null) {
 			return previewList.size();
@@ -40,6 +41,10 @@ public class PhotoView extends View {
 		return 0;
 	}
 	
+	/** Clears the list of previews, then loads up all the files that are
+	 *  stored at the path. It then decodes these files into bitmaps and
+	 *  scales them to a size that is can be previewed and applies contrast.
+	 */
 	public void reloadPhotos() {
 		previewList.clear();
 		
@@ -56,10 +61,15 @@ public class PhotoView extends View {
 		}
 	}
 	
+	/** Sets the index of the preview list to select which photo is shown
+	 *  in the photo view. */
 	public void setPhotoIndex(int index) {
 		photoIndex = index;
 	}
 	
+	/** Gets a file descriptor to the photo which is currently shown in
+	 *  the photo view.
+	 */
 	public File getCurrentPhoto() {
 		if(photos != null) {
 			return photos[photoIndex];
@@ -67,6 +77,7 @@ public class PhotoView extends View {
 		return null;
 	}
 	
+	/** Sets a path to find files in using the reloadPhotos method */
 	public void setPath(String path) {
 		this.path = path;
 	}
